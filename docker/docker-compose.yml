@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  base:
+    build:
+      context: ..
+      dockerfile: docker/base.Dockerfile
+      args:
+        WORKSPACE_FLAVOR: ${WORKSPACE_FLAVOR:-full}
+    image: ml-workspace:base
+
+  runtimes:
+    build:
+      context: ..
+      dockerfile: docker/runtimes.Dockerfile
+      args:
+        BASE_IMAGE: ml-workspace:base
+        WORKSPACE_FLAVOR: ${WORKSPACE_FLAVOR:-full}
+    image: ml-workspace:runtimes
+    depends_on:
+      - base
+
+  gui:
+    build:
+      context: ..
+      dockerfile: docker/gui.Dockerfile
+      args:
+        BASE_IMAGE: ml-workspace:runtimes
+        WORKSPACE_FLAVOR: ${WORKSPACE_FLAVOR:-full}
+    image: ml-workspace:gui
+    depends_on:
+      - runtimes
+
+  python:
+    build:
+      context: ..
+      dockerfile: docker/python.Dockerfile
+      args:
+        BASE_IMAGE: ml-workspace:gui
+        WORKSPACE_FLAVOR: ${WORKSPACE_FLAVOR:-full}
+    image: ml-workspace:python
+    depends_on:
+      - gui
+
+  jupyter:
+    build:
+      context: ..
+      dockerfile: docker/jupyter.Dockerfile
+      args:
+        BASE_IMAGE: ml-workspace:python
+        WORKSPACE_FLAVOR: ${WORKSPACE_FLAVOR:-full}
+    image: ml-workspace:jupyter
+    depends_on:
+      - python
+
+  final:
+    build:
+      context: ..
+      dockerfile: docker/final.Dockerfile
+      args:
+        BASE_IMAGE: ml-workspace:gui
+        JUPYTER_IMAGE: ml-workspace:jupyter
+        WORKSPACE_FLAVOR: ${WORKSPACE_FLAVOR:-full}
+        ARG_BUILD_DATE: ${ARG_BUILD_DATE:-unknown}
+        ARG_VCS_REF: ${ARG_VCS_REF:-unknown}
+        ARG_WORKSPACE_VERSION: ${ARG_WORKSPACE_VERSION:-unknown}
+    image: ml-workspace:latest
+    depends_on:
+      - jupyter

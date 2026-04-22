@@ -1,0 +1,76 @@
+{
+  "name": "@ml-workspace/tooling-extension",
+  "version": "0.1.0",
+  "description": "JupyterLab tooling extension for workspace management",
+  "keywords": [
+    "jupyterlab-extension",
+    "jupyter",
+    "widgets",
+    "jupyterlab"
+  ],
+  "homepage": "https://github.com/ml-tooling/ml-workspace",
+  "bugs": {
+    "url": "https://github.com/ml-tooling/ml-workspace/issues"
+  },
+  "license": "Apache-2.0",
+  "author": {
+    "name": "ML Workspace Team"
+  },
+  "files": [
+    "lib",
+    "style",
+    "schema"
+  ],
+  "main": "lib/src/index.js",
+  "types": "lib/src/index.d.ts",
+  "style": "style/index.css",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ml-tooling/ml-workspace.git"
+  },
+  "dependencies": {
+    "@jupyterlab/application": "^4.0.0",
+    "@jupyterlab/apputils": "^4.0.0",
+    "@jupyterlab/coreutils": "^6.0.0",
+    "@jupyterlab/filebrowser": "^4.0.0",
+    "@jupyterlab/services": "^7.0.0",
+    "@jupyterlab/translation": "^4.0.0",
+    "@jupyterlab/ui-components": "^4.0.0",
+    "@lumino/coreutils": "^2.0.0",
+    "@lumino/widgets": "^2.0.0"
+  },
+  "devDependencies": {
+    "@jupyterlab/builder": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "jupyterlab": {
+    "extension": true,
+    "discovery": {
+      "server": {
+        "base": {
+          "name": "jupyter_tooling"
+        },
+        "managers": [
+          "pip"
+        ]
+      }
+    },
+    "schemaDir": "schema"
+  },
+  "scripts": {
+    "build": "jupyter labextension build .",
+    "develop": "jupyter labextension develop . --overwrite"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  }
+}

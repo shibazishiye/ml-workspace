@@ -1,0 +1,33 @@
+{
+  "jupyter.lab.shortcuts": [],
+  "title": "jupyterTooling",
+  "description": "jupyterTooling settings for workspace tooling integration.",
+  "type": "object",
+  "properties": {
+    "storageCheckEnabled": {
+      "type": "boolean",
+      "title": "Enable Storage Check",
+      "description": "Check storage usage on extension activation and show warnings when limits are exceeded.",
+      "default": true
+    },
+    "toolsMenuEnabled": {
+      "type": "boolean",
+      "title": "Enable Tools Menu",
+      "description": "Show the Open Tool dropdown menu in the header.",
+      "default": true
+    },
+    "notebookToolbarEnabled": {
+      "type": "boolean",
+      "title": "Enable Notebook Toolbar",
+      "description": "Show Git Commit button in notebook toolbar.",
+      "default": true
+    },
+    "fileBrowserEnabled": {
+      "type": "boolean",
+      "title": "Enable File Browser Integration",
+      "description": "Show Git buttons in file browser toolbar.",
+      "default": true
+    }
+  },
+  "additionalProperties": false
+}

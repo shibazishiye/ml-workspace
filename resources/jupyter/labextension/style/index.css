@@ -1,0 +1,62 @@
+/*
+ * ML Workspace Tooling Extension Styles
+ */
+
+.jp-ToolingWidget {
+  min-width: 250px;
+  max-width: 350px;
+  overflow-y: auto;
+}
+
+.jp-ToolingWidget-content {
+  padding: 10px;
+}
+
+.jp-ToolingWidget-section {
+  margin-bottom: 16px;
+}
+
+.jp-ToolingWidget-section h3 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--jp-ui-font-color1);
+}
+
+.jp-ToolingWidget-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.jp-ToolingWidget-tool {
+  margin: 2px;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid var(--jp-border-color2);
+  border-radius: 3px;
+  background: var(--jp-layout-color2);
+}
+
+.jp-ToolingWidget-tool:hover {
+  background: var(--jp-layout-color3);
+}
+
+.jp-ToolingWidget-gitinfo {
+  font-size: 12px;
+  color: var(--jp-ui-font-color1);
+  margin-bottom: 8px;
+}
+
+.jp-ToolingWidget-loading {
+  padding: 10px;
+  color: var(--jp-ui-font-color2);
+}
+
+.jp-ToolingWidget-error {
+  padding: 8px;
+  background: var(--jp-theme-error-bg);
+  color: var(--jp-theme-error);
+  border-radius: 3px;
+}

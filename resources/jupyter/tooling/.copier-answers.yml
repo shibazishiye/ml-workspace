@@ -1,0 +1,17 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v4.5.2
+_src_path: https://github.com/jupyterlab/extension-template
+author_email: lishuo.ls@gmail.com
+author_name: Shu Yun Fei
+create_claude_symlink: true
+create_gemini_symlink: true
+has_ai_rules: true
+has_binder: true
+has_settings: true
+kind: frontend-and-server
+labextension_name: jupyterTooling
+project_short_description: A JupyterLab extension that show tool menu at top right.
+python_name: jupyterTooling
+repository: https://github.com/shibazishiye/jupyter-tooling
+test: true
+

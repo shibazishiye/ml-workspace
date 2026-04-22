@@ -1,0 +1,26 @@
+{
+  "jupyter.labtools": [],
+  "title": "Jupyter Tooling",
+  "description": "Settings for the ML Workspace tooling extension",
+  "properties": {
+    "showStorageWarnings": {
+      "type": "boolean",
+      "title": "Show Storage Warnings",
+      "description": "Whether to show storage usage warnings when approaching limits",
+      "default": true
+    },
+    "showVSCode": {
+      "type": "boolean",
+      "title": "Show VS Code Button",
+      "description": "Whether to show the VS Code button in the toolbar",
+      "default": true
+    },
+    "showVNC": {
+      "type": "boolean",
+      "title": "Show VNC Button",
+      "description": "Whether to show the VNC desktop button in the toolbar",
+      "default": true
+    }
+  },
+  "type": "object"
+}

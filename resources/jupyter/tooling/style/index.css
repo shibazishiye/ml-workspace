@@ -1,6 +1,11 @@
 /*
     JupyterTooling extension styles
+    Matching old nbextension tooling-extension UI look and feel.
 */
+
+/* ============================================================
+   Tools Menu - Button + Dropdown (matches old "Open Tool" btn-group)
+   ============================================================ */
 
 .jp-jupyterTooling-tools-menu {
   display: flex;
@@ -8,24 +13,87 @@
   margin-left: 8px;
 }
 
-.jp-jupyterTooling-dropdown {
-  padding: 4px 8px;
+.jp-jupyterTooling-btn-group {
+  position: relative;
+  display: inline-block;
+  float: right;
+  margin-left: 2px;
+}
+
+.jp-jupyterTooling-dropdown-toggle {
+  padding: 5px 10px;
   border: 1px solid var(--jp-border-color1, #ccc);
   border-radius: 4px;
-  background: var(--jp-ui-background-color1, #fff);
-  color: var(--jp-ui-font-color1, #000);
+  background: var(--jp-layout-color1, #fff);
+  color: var(--jp-ui-font-color1, #333);
   cursor: pointer;
   font-size: 12px;
-  min-width: 120px;
+  line-height: 1.42857143;
+  white-space: nowrap;
 }
 
-.jp-jupyterTooling-dropdown:hover {
-  border-color: var(--jp-border-color2, #888);
+.jp-jupyterTooling-dropdown-toggle:hover {
+  background: var(--jp-layout-color2, #e6e6e6);
+  border-color: var(--jp-border-color2, #adadad);
 }
 
-.jp-jupyterTooling-dropdown:focus {
-  outline: none;
-  border-color: var(--jp-brand-color1, #42a5f5);
+.jp-jupyterTooling-caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 4px;
+  vertical-align: middle;
+  border-top: 4px dashed;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  border-top-color: var(--jp-ui-font-color1, #333);
+}
+
+.jp-jupyterTooling-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: auto;
+  z-index: 1000;
+  min-width: 180px;
+  max-height: 400px;
+  overflow-y: auto;
+  margin: 2px 0 0;
+  padding: 5px 0;
+  list-style: none;
+  background-color: var(--jp-layout-color1, #fff);
+  border: 1px solid var(--jp-border-color1, #ccc);
+  border-radius: 4px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+}
+
+.jp-jupyterTooling-dropdown-menu li {
+  margin: 0;
+  padding: 0;
+}
+
+.jp-jupyterTooling-dropdown-menu li a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.42857143;
+  color: var(--jp-ui-font-color1, #333);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.jp-jupyterTooling-dropdown-menu li a:hover {
+  background-color: var(--jp-layout-color2, #f5f5f5);
+  color: var(--jp-ui-font-color0, #262626);
+}
+
+.jp-jupyterTooling-tool-description {
+  display: block;
+  color: var(--jp-ui-font-color2, #808080);
+  padding: initial;
+  font-size: 12px;
 }
 
 .jp-jupyterTooling-loading {
@@ -40,18 +108,23 @@
   padding: 4px 8px;
 }
 
+/* ============================================================
+   Toolbar and File Browser buttons
+   ============================================================ */
+
 .jp-jupyterTooling-toolbar-btn {
-  padding: 4px 12px;
+  padding: 5px 10px;
   border: 1px solid var(--jp-border-color1, #ccc);
   border-radius: 4px;
-  background: var(--jp-ui-background-color1, #fff);
-  color: var(--jp-ui-font-color1, #000);
+  background: var(--jp-layout-color1, #fff);
+  color: var(--jp-ui-font-color1, #333);
   cursor: pointer;
   font-size: 12px;
 }
 
 .jp-jupyterTooling-toolbar-btn:hover {
-  background: var(--jp-ui-background-color2, #f5f5f5);
+  background: var(--jp-layout-color2, #e6e6e6);
+  border-color: var(--jp-border-color2, #adadad);
 }
 
 .jp-jupyterTooling-toolbar-item {
@@ -60,29 +133,94 @@
 }
 
 .jp-jupyterTooling-filebrowser-btn {
-  padding: 4px 12px;
+  padding: 5px 10px;
   margin-left: 4px;
   border: 1px solid var(--jp-border-color1, #ccc);
   border-radius: 4px;
-  background: var(--jp-ui-background-color1, #fff);
-  color: var(--jp-ui-font-color1, #000);
+  background: var(--jp-layout-color1, #fff);
+  color: var(--jp-ui-font-color1, #333);
   cursor: pointer;
   font-size: 12px;
 }
 
 .jp-jupyterTooling-filebrowser-btn:hover {
-  background: var(--jp-ui-background-color2, #f5f5f5);
+  background: var(--jp-layout-color2, #e6e6e6);
+  border-color: var(--jp-border-color2, #adadad);
 }
+
+/* ============================================================
+   Commit Dialog - Side-by-side layout matching old extension
+   Left: commit message textarea (50%)
+   Right: git info with gray text and Ungit link (50%)
+   ============================================================ */
 
 .jp-jupyterTooling-commit-dialog {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  width: 100%;
 }
 
+.jp-jupyterTooling-commit-flex {
+  display: flex;
+}
+
+.jp-jupyterTooling-commit-left {
+  width: 50%;
+  float: left;
+}
+
+.jp-jupyterTooling-commit-left span {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.jp-jupyterTooling-commit-msg {
+  resize: none;
+  width: 100%;
+  padding: 4px;
+  border: 1px solid var(--jp-border-color1, #ccc);
+  border-radius: 2px;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.jp-jupyterTooling-commit-msg:focus {
+  outline: none;
+  border-color: var(--jp-brand-color1, #42a5f5);
+}
+
+.jp-jupyterTooling-commit-right {
+  width: 50%;
+  float: right;
+  font-size: 12px;
+  color: #909090;
+  padding-left: 12px;
+}
+
+.jp-jupyterTooling-ungit-link {
+  float: right;
+  font-size: 10px;
+  padding-right: 5px;
+  color: var(--jp-brand-color1, #42a5f5);
+  text-decoration: none;
+}
+
+.jp-jupyterTooling-ungit-link:hover {
+  text-decoration: underline;
+}
+
+.jp-jupyterTooling-commit-info-row {
+  margin-bottom: 2px;
+}
+
+.jp-jupyterTooling-commit-info-label {
+  display: inline-block;
+  width: 120px;
+  color: #909090;
+}
+
+/* Legacy classes kept for backward compatibility */
 .jp-jupyterTooling-git-info {
   padding: 8px;
-  background: var(--jp-ui-background-color2, #f5f5f5);
+  background: var(--jp-layout-color2, #f5f5f5);
   border-radius: 4px;
   font-size: 12px;
 }
@@ -107,25 +245,43 @@
   font-weight: 500;
 }
 
-.jp-jupyterTooling-commit-msg {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid var(--jp-border-color1, #ccc);
-  border-radius: 4px;
-  font-family: inherit;
-  font-size: 12px;
-  resize: vertical;
-}
-
-.jp-jupyterTooling-commit-msg:focus {
-  outline: none;
-  border-color: var(--jp-brand-color1, #42a5f5);
-}
+/* ============================================================
+   Storage Warning Dialog - Matching old alert-danger style
+   ============================================================ */
 
 .jp-jupyterTooling-storage-warning {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.jp-jupyterTooling-alert-danger {
+  padding: 15px;
+  margin-bottom: 12px;
+  border: 1px solid #ebccd1;
+  border-radius: 4px;
+  background-color: #f2dede;
+  color: #a94442;
+}
+
+.jp-jupyterTooling-storage-detail {
+  font-size: 11px;
+  color: #a94442;
+}
+
+.jp-jupyterTooling-storage-instructions {
+  font-size: 11px;
+  color: var(--jp-ui-font-color2, #666);
+  line-height: 1.5;
+}
+
+.jp-jupyterTooling-code {
+  padding: 2px 4px;
+  font-size: 90%;
+  color: #c7254e;
+  background-color: #f9f2f4;
+  border-radius: 4px;
+  font-family: var(--jp-code-font-family, monospace);
 }
 
 .jp-jupyterTooling-storage-warning ul {

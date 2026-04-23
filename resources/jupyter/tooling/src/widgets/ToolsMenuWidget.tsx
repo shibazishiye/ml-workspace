@@ -5,12 +5,16 @@ import { fetchTools, Tool } from '../api';
 
 /**
  * React component for the tools dropdown menu.
+ * Matches the old extension's "Open Tool" button+dropdown style with
+ * tool name and description shown in each menu item.
  */
 function ToolsMenuComponent(props: {
   serverSettings: ServerConnection.ISettings;
 }): React.ReactElement {
   const [tools, setTools] = React.useState<Tool[]>([]);
   const [loading, setLoading] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     let cancelled = false;
@@ -33,13 +37,31 @@ function ToolsMenuComponent(props: {
     };
   }, [props.serverSettings]);
 
-  const handleToolSelect = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    const selectedTool = tools.find(t => t.name === e.target.value);
-    if (selectedTool && selectedTool.url_path) {
-      window.open(selectedTool.url_path, '_blank');
+  // Close dropdown when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent): void => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleToggle = (): void => {
+    setOpen(!open);
+  };
+
+  const handleToolClick = (tool: Tool): void => {
+    if (tool.url_path) {
+      window.open(tool.url_path, '_blank');
     }
-    // Reset dropdown to default after selection
-    e.target.value = '';
+    setOpen(false);
   };
 
   if (loading) {
@@ -55,14 +77,45 @@ function ToolsMenuComponent(props: {
   }
 
   return (
-    <select className="jp-jupyterTooling-dropdown" onChange={handleToolSelect}>
-      <option value="">Open Tool</option>
-      {tools.map(tool => (
-        <option key={tool.id} value={tool.name} title={tool.description}>
-          {tool.name}
-        </option>
-      ))}
-    </select>
+    <div
+      ref={containerRef}
+      className="jp-jupyterTooling-btn-group"
+    >
+      <button
+        className="jp-jupyterTooling-dropdown-toggle"
+        onClick={handleToggle}
+        aria-expanded={open}
+      >
+        <span>Open Tool</span>{' '}
+        <span className="jp-jupyterTooling-caret" />
+      </button>
+      {open && (
+        <ul className="jp-jupyterTooling-dropdown-menu">
+          {tools.map(tool => (
+            <li key={tool.id}>
+              <a
+                role="menuitem"
+                tabIndex={-1}
+                href={tool.url_path || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={e => {
+                  e.preventDefault();
+                  handleToolClick(tool);
+                }}
+              >
+                {tool.name}
+                {tool.description && (
+                  <span className="jp-jupyterTooling-tool-description">
+                    {tool.description}
+                  </span>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
 

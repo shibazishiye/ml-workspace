@@ -6,42 +6,72 @@ import { notifySuccess, notifyError } from '../commands';
 
 /**
  * React component for the commit dialog body.
- * Displays git info and a textarea for the commit message.
+ * Matches the old extension layout: commit message textarea on the left (50%),
+ * git info on the right (50%) with Ungit link, styled in gray.
  */
 function CommitDialogBody(props: {
   filePath: string;
   gitInfo: GitInfo;
+  baseUrl: string;
 }): React.ReactElement {
-  const { filePath, gitInfo } = props;
-  const hasGitConfig = Boolean(gitInfo.userName && gitInfo.userEmail);
+  const { gitInfo, baseUrl } = props;
+  const repoRoot = gitInfo.repoRoot || '/workspace';
+  const ungitPath =
+    baseUrl + 'tools/ungit/#/repository?path=' + encodeURIComponent(repoRoot);
+
+  const lastCommit = gitInfo.lastCommit || ' ';
+  const activeBranch = gitInfo.activeBranch || ' ';
+  const userEmail = gitInfo.userEmail || ' ';
+  const userName = gitInfo.userName || ' ';
 
   return (
     <div className="jp-jupyterTooling-commit-dialog">
-      <p>
-        Commit file: <code>{filePath}</code>
-      </p>
-      <div className="jp-jupyterTooling-git-info">
-        <p>User: {gitInfo.userName || 'Not configured'}</p>
-        <p>Email: {gitInfo.userEmail || 'Not configured'}</p>
-        {gitInfo.activeBranch && <p>Branch: {gitInfo.activeBranch}</p>}
-        {gitInfo.lastCommit && <p>Last commit: {gitInfo.lastCommit}</p>}
-      </div>
-      {!hasGitConfig && (
-        <p className="jp-jupyterTooling-warning">
-          Please configure git user.name and user.email before committing.
-        </p>
-      )}
-      <div className="jp-jupyterTooling-commit-form">
-        <label htmlFor="jp-jupyterTooling-commit-msg-input">
-          Commit message:
-        </label>
-        <textarea
-          id="jp-jupyterTooling-commit-msg-input"
-          className="jp-jupyterTooling-commit-msg"
-          placeholder="Enter commit message (optional)"
-          rows={3}
-          defaultValue=""
-        />
+      <div className="jp-jupyterTooling-commit-flex">
+        <div className="jp-jupyterTooling-commit-left">
+          <span>Commit message: </span>
+          <textarea
+            id="jp-jupyterTooling-commit-msg-input"
+            className="jp-jupyterTooling-commit-msg"
+            rows={4}
+            cols={40}
+            defaultValue=""
+          />
+        </div>
+        <div className="jp-jupyterTooling-commit-right">
+          <a
+            className="jp-jupyterTooling-ungit-link"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={ungitPath}
+          >
+            Ungit
+          </a>
+          <br />
+          <div className="jp-jupyterTooling-commit-info-row">
+            <label className="jp-jupyterTooling-commit-info-label">
+              Last Commit:
+            </label>
+            <span>{lastCommit}</span>
+          </div>
+          <div className="jp-jupyterTooling-commit-info-row">
+            <label className="jp-jupyterTooling-commit-info-label">
+              Push to Branch:
+            </label>
+            <span>{activeBranch}</span>
+          </div>
+          <div className="jp-jupyterTooling-commit-info-row">
+            <label className="jp-jupyterTooling-commit-info-label">
+              Configured email:
+            </label>
+            <span>{userEmail}</span>
+          </div>
+          <div className="jp-jupyterTooling-commit-info-row">
+            <label className="jp-jupyterTooling-commit-info-label">
+              Configured name:
+            </label>
+            <span>{userName}</span>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -64,13 +94,42 @@ export async function showCommitDialog(
     return;
   }
 
+  if (!gitInfo.repoRoot) {
+    await showErrorMessage(
+      'An issue with git occurred',
+      'This file is not in a valid git repository.'
+    );
+    return;
+  }
+
+  if (!gitInfo.userName || !gitInfo.userEmail) {
+    await showErrorMessage(
+      'Git Configuration Required',
+      'Please configure git user.name and user.email before committing.\n' +
+        'Run: git config --global user.name "YOUR NAME"\n' +
+        'Run: git config --global user.email "YOUR EMAIL"'
+    );
+    return;
+  }
+
+  const baseUrl = serverSettings.baseUrl;
+
   const result = await showDialog({
-    title: 'Git Commit & Push',
-    body: <CommitDialogBody filePath={filePath} gitInfo={gitInfo} />,
-    buttons: [Dialog.cancelButton(), Dialog.okButton({ label: 'Commit' })]
+    title: 'Commit and push this notebook',
+    body: (
+      <CommitDialogBody
+        filePath={filePath}
+        gitInfo={gitInfo}
+        baseUrl={baseUrl}
+      />
+    ),
+    buttons: [
+      Dialog.cancelButton({ label: 'Close' }),
+      Dialog.okButton({ label: 'Commit & Push' })
+    ]
   });
 
-  if (result.button.label !== 'Commit') {
+  if (result.button.label !== 'Commit & Push') {
     return;
   }
 
@@ -85,7 +144,7 @@ export async function showCommitDialog(
       { filePath, commitMsg: commitMsg || undefined },
       serverSettings
     );
-    notifySuccess(`Committed and pushed: ${filePath}`);
+    notifySuccess(`Push Successful: ${filePath}`);
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     notifyError(`Commit failed: ${msg}`);

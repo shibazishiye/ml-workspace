@@ -50,15 +50,12 @@
 }
 
 .jp-jupyterTooling-dropdown-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  left: auto;
-  z-index: 1000;
+  position: fixed;
+  z-index: 10000;
   min-width: 180px;
   max-height: 400px;
   overflow-y: auto;
-  margin: 2px 0 0;
+  margin: 0;
   padding: 5px 0;
   list-style: none;
   background-color: var(--jp-layout-color1, #fff);
